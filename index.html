@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GNH Emotion Check-in</title>
+    <title>GNH Emotion Check-in 2.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -12,7 +12,6 @@
             --accent: #FFE66D;
             --dark: #2F2F2F;
             --bg: #F7FFF7;
-            --white: #ffffff;
         }
 
         body {
@@ -27,24 +26,44 @@
         }
 
         #popup-card {
-            background: var(--white);
+            background: white;
             padding: 2rem;
             border-radius: 30px;
             box-shadow: 10px 10px 0px var(--dark);
             border: 4px solid var(--dark);
-            max-width: 550px;
+            max-width: 600px;
             width: 100%;
             text-align: center;
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: popIn 0.5s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        @keyframes popIn {
-            from { transform: scale(0.5); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        img.gnh-chart { width: 100%; border-radius: 15px; margin-bottom: 20px; border: 2px solid #eee; }
+
+        h2 { font-family: 'Montserrat', sans-serif; color: var(--primary); font-size: 1.5rem; }
+        
+        .domain-hint {
+            background: #e0f7fa;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            color: #006064;
+            margin: 10px 0;
+            display: inline-block;
         }
 
-        h2 { font-family: 'Montserrat', sans-serif; color: var(--primary); margin-bottom: 10px; }
-        p { color: #444; line-height: 1.5; }
+        textarea {
+            width: 100%;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            padding: 15px;
+            font-family: inherit;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
 
         .btn-next {
             background: var(--secondary);
@@ -58,111 +77,111 @@
             margin-top: 20px;
         }
 
-        .btn-next:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--dark); }
-
-        textarea {
-            width: 100%;
-            border: 2px solid #ddd;
-            border-radius: 15px;
-            padding: 12px;
-            font-family: inherit;
-            margin-top: 15px;
-            box-sizing: border-box;
-            resize: none;
-        }
-
         .step { display: none; }
         .step.active { display: block; }
 
-        /* Summary Styling */
-        .summary-box {
-            text-align: left;
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 15px;
-            border-left: 5px solid var(--primary);
-            margin: 15px 0;
-        }
-
-        .cheat-sheet {
-            text-align: left;
+        /* Vocab & Audio */
+        .vocab-card {
             background: #fff8e1;
             padding: 15px;
             border-radius: 15px;
-            border: 2px dashed var(--dark);
+            border: 2px solid var(--dark);
             margin-top: 20px;
+            text-align: left;
         }
 
-        .cheat-sheet h3 { font-size: 1rem; color: var(--dark); margin-top: 0; text-transform: uppercase; }
-        .vocab-item { color: #d32f2f; font-weight: bold; }
-        .structure-item { font-style: italic; color: #1565c0; display: block; margin-bottom: 8px; font-size: 0.9rem; }
-        
-        .badge { background: var(--accent); padding: 5px 10px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; }
+        .vocab-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .audio-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .suggested-sentence {
+            background: #f0f4ff;
+            padding: 12px;
+            border-left: 4px solid #3f51b5;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            text-align: left;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
 
 <div id="popup-card">
     <div class="step active" id="step1">
-        <span class="badge">#IELTS_6.5_ENERGY</span>
-        <h2>Ready to slay? 👋</h2>
-        <p>Let's check your <b>Gross National Happiness (GNH)</b> before we start!</p>
-        <button class="btn-next" onclick="nextStep(2)">Get Started ✨</button>
+        <img src="https://lh3.googleusercontent.com/d/1Z_u8uLOfp_6yS6F3X_A7A5v1kH_Xk-7y" class="gnh-chart" alt="GNH Domains">
+        <h2>GNH Vibe Check 👋</h2>
+        <p>Before we slay, let's explore the <b>9 Domains of Gross National Happiness</b>. Ready to reflect?</p>
+        <button class="btn-next" onclick="nextStep(2)">I'm Ready! ✨</button>
     </div>
 
     <div class="step" id="step2">
         <h2>What's making you 🌻?</h2>
-        <p>Which GNH pillar is boosting your mood today?</p>
-        <textarea id="ans1" rows="3" placeholder="I feel happy because..."></textarea>
+        <div class="domain-hint">💡 Hint: Think about <b>Health, Education,</b> or <b>Living Standards</b>.</div>
+        <textarea id="ans1" rows="3" placeholder="I feel great because..."></textarea>
         <button class="btn-next" onclick="nextStep(3)">Next ➡️</button>
     </div>
 
     <div class="step" id="step3">
         <h2>Any energy drainers? ⛈️</h2>
-        <p>What is currently the biggest challenge to your happiness?</p>
-        <textarea id="ans2" rows="3" placeholder="Honestly, I'm struggling with..."></textarea>
-        <button class="btn-next" onclick="nextStep(4)">Almost Done ✅</button>
+        <div class="domain-hint">💡 Hint: Consider <b>Time Use</b> (work/sleep) or <b>Psychological Wellbeing</b>.</div>
+        <textarea id="ans2" rows="3" placeholder="Lately, I've been struggling with..."></textarea>
+        <button class="btn-next" onclick="nextStep(4)">Almost there! ✅</button>
     </div>
 
     <div class="step" id="step4">
         <h2>Your Circle 🫂</h2>
-        <p>How is the wellbeing of your family and community?</p>
-        <textarea id="ans3" rows="3" placeholder="My family is..."></textarea>
-        <button class="btn-next" onclick="showFinal()">Finish & Review 🚀</button>
+        <div class="domain-hint">💡 Hint: Reflect on <b>Community Vitality</b> or <b>Cultural Diversity</b>.</div>
+        <textarea id="ans3" rows="3" placeholder="My family/environment is..."></textarea>
+        <button class="btn-next" onclick="showFinal()">Finish & Upgrade 🚀</button>
     </div>
 
     <div class="step" id="step-final">
-        <h2>Vibe Check: Complete! 🌈</h2>
-        <div class="summary-box" id="user-responses"></div>
+        <h2>Lesson Summary 🌈</h2>
         
-        <div class="cheat-sheet">
-            <h3>💡 Band 8.0+ Vocabulary</h3>
-            <p><span class="vocab-item">Euphoric:</span> Extremely happy.<br>
-               <span class="vocab-item">Contentment:</span> A state of happiness and satisfaction.<br>
-               <span class="vocab-item">On cloud nine:</span> Very happy and excited.<br>
-               <span class="vocab-item">A major contributor to:</span> Something that helps cause something.<br>
-               <span class="vocab-item">Sole determinant:</span> The only thing that decides something.</p>
-            
-            <hr>
-            <h3>🚀 Random Structures for you</h3>
-            <div id="random-structures"></div>
+        <div class="vocab-card">
+            <h3 style="margin-top:0">🔊 High-level Vocabulary</h3>
+            <div id="vocab-list"></div>
         </div>
-        <p style="margin-top:15px; font-size:0.8rem;"><i>Time to turn these vibes into a Band 8.0!</i></p>
+
+        <div style="margin-top: 20px;">
+            <h3 style="text-align:left">📝 Suggested Full Sentences</h3>
+            <div id="sentence-suggestions"></div>
+        </div>
+
+        <button class="btn-next" onclick="location.reload()">Start New Session 🔄</button>
     </div>
 </div>
 
 <script>
+    const vocabData = [
+        { word: "Euphoric", def: "A feeling of intense happiness." },
+        { word: "Contentment", def: "State of being satisfied." },
+        { word: "Sole determinant", def: "The only deciding factor." },
+        { word: "Major contributor", def: "Something that helps a lot." },
+        { word: "On cloud nine", def: "Extremely happy." }
+    ];
+
     const structures = [
-        "I strongly believe that’s not the case as academic success can be also defined as...",
-        "I couldn’t agree more that academic success is mainly shaped by both ... and ...",
-        "It’s often said that ... serves/acts as a driving force behind academic success.",
-        "I think it really depends as academic success is built upon several factors such as ...",
-        "From my perspective, academic success is more about finding a balance between ... and ...",
-        "I don’t think it’s true that academic success can be thought of as / reduced to ...",
-        "I firmly believe that academic success is determined by things such as ...",
-        "There is a common belief that academic success is closely tied to both ... and ...",
-        "In some cases, it could be argued that academic success is influenced by factors such as ...",
-        "As far as I’m concerned, academic success stems from several different factors such as ..."
+        "I firmly believe that happiness is determined by things such as {topic}.",
+        "From my perspective, wellbeing is mainly shaped by {topic}.",
+        "I couldn't agree more that {topic} acts as a driving force behind overall satisfaction.",
+        "It seems to me that quality of life basically refers to the state of achieving {topic}.",
+        "As far as I'm concerned, happiness stems from finding a balance between {topic} and daily life."
     ];
 
     function nextStep(s) {
@@ -170,23 +189,34 @@
         document.getElementById('step' + s).classList.add('active');
     }
 
-    function showFinal() {
-        // Show user responses
-        const res = `
-            <b>Your happiness:</b> ${document.getElementById('ans1').value}<br>
-            <b>Your challenge:</b> ${document.getElementById('ans2').value}<br>
-            <b>Your community:</b> ${document.getElementById('ans3').value}
-        `;
-        document.getElementById('user-responses').innerHTML = res;
+    function speak(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        window.speechSynthesis.speak(utterance);
+    }
 
-        // Pick 5 random structures
-        const shuffled = structures.sort(() => 0.5 - Math.random());
-        const selected = shuffled.slice(0, 5);
-        let structHtml = '';
-        selected.forEach(s => {
-            structHtml += `<span class="structure-item">• ${s}</span>`;
+    function showFinal() {
+        const userInput = document.getElementById('ans1').value || "education and family";
+        
+        // Render Vocab
+        let vHtml = '';
+        vocabData.forEach(v => {
+            vHtml += `
+                <div class="vocab-item">
+                    <span><b>${v.word}</b>: ${v.def}</span>
+                    <button class="audio-btn" onclick="speak('${v.word}')">🔊</button>
+                </div>`;
         });
-        document.getElementById('random-structures').innerHTML = structHtml;
+        document.getElementById('vocab-list').innerHTML = vHtml;
+
+        // Render Random Full Sentences
+        let sHtml = '';
+        const shuffled = structures.sort(() => 0.5 - Math.random()).slice(0, 5);
+        shuffled.forEach(s => {
+            const fullSentence = s.replace("{topic}", `<u style="color:var(--primary)">${userInput}</u>`);
+            sHtml += `<div class="suggested-sentence">${fullSentence}</div>`;
+        });
+        document.getElementById('sentence-suggestions').innerHTML = sHtml;
 
         nextStep('-final');
     }
