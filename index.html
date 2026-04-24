@@ -12,6 +12,7 @@
             --accent: #FFE66D;
             --dark: #2F2F2F;
             --bg: #F7FFF7;
+            --white: #ffffff;
         }
 
         body {
@@ -20,21 +21,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            overflow: hidden;
+            padding: 20px;
         }
 
         #popup-card {
-            background: white;
-            padding: 2.5rem;
+            background: var(--white);
+            padding: 2rem;
             border-radius: 30px;
             box-shadow: 10px 10px 0px var(--dark);
             border: 4px solid var(--dark);
-            max-width: 480px;
-            width: 90%;
+            max-width: 550px;
+            width: 100%;
             text-align: center;
-            position: relative;
             animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
@@ -43,38 +43,22 @@
             to { transform: scale(1); opacity: 1; }
         }
 
-        h2 {
-            font-family: 'Montserrat', sans-serif;
-            color: var(--primary);
-            font-size: 1.6rem;
-            margin-bottom: 15px;
-        }
-
-        p { color: #444; line-height: 1.5; font-size: 1rem; }
+        h2 { font-family: 'Montserrat', sans-serif; color: var(--primary); margin-bottom: 10px; }
+        p { color: #444; line-height: 1.5; }
 
         .btn-next {
             background: var(--secondary);
             color: white;
             border: 3px solid var(--dark);
-            padding: 12px 35px;
+            padding: 12px 30px;
             border-radius: 15px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 1.1rem;
-            margin-top: 20px;
-            transition: 0.2s;
             box-shadow: 4px 4px 0px var(--dark);
+            margin-top: 20px;
         }
 
-        .btn-next:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0px var(--dark);
-        }
-
-        .btn-next:active {
-            transform: translate(2px, 2px);
-            box-shadow: 0px 0px 0px var(--dark);
-        }
+        .btn-next:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--dark); }
 
         textarea {
             width: 100%;
@@ -85,76 +69,126 @@
             margin-top: 15px;
             box-sizing: border-box;
             resize: none;
-            outline: none;
         }
-
-        textarea:focus { border-color: var(--secondary); }
 
         .step { display: none; }
         .step.active { display: block; }
 
-        .badge {
-            background: var(--accent);
-            padding: 6px 12px;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
+        /* Summary Styling */
+        .summary-box {
+            text-align: left;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            margin: 15px 0;
         }
+
+        .cheat-sheet {
+            text-align: left;
+            background: #fff8e1;
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px dashed var(--dark);
+            margin-top: 20px;
+        }
+
+        .cheat-sheet h3 { font-size: 1rem; color: var(--dark); margin-top: 0; text-transform: uppercase; }
+        .vocab-item { color: #d32f2f; font-weight: bold; }
+        .structure-item { font-style: italic; color: #1565c0; display: block; margin-bottom: 8px; font-size: 0.9rem; }
+        
+        .badge { background: var(--accent); padding: 5px 10px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div id="popup-card">
     <div class="step active" id="step1">
-        <span class="badge">#IELTS_Vibe_Check</span>
-        <h2>Hi there, Future Band 8.0s! 👋</h2>
-        <p>Before we dive into those "nerve-wracking" passages, let's do a quick mental check-in based on the <b>Gross National Happiness (GNH)</b> index!</p>
-        <button class="btn-next" onclick="nextStep(2)">Let's start! ✨</button>
+        <span class="badge">#IELTS_6.5_ENERGY</span>
+        <h2>Ready to slay? 👋</h2>
+        <p>Let's check your <b>Gross National Happiness (GNH)</b> before we start!</p>
+        <button class="btn-next" onclick="nextStep(2)">Get Started ✨</button>
     </div>
 
     <div class="step" id="step2">
-        <h2>What makes you "Slay"? 🌻</h2>
-        <p>Think about the GNH pillars (Health, Education, Environment...). What is currently making you feel most fulfilled?</p>
-        <textarea id="pos-input" rows="3" placeholder="e.g., Good food, family time, or finally hitting that target score..."></textarea>
-        <button class="btn-next" onclick="nextStep(3)">Keep going... ➡️</button>
+        <h2>What's making you 🌻?</h2>
+        <p>Which GNH pillar is boosting your mood today?</p>
+        <textarea id="ans1" rows="3" placeholder="I feel happy because..."></textarea>
+        <button class="btn-next" onclick="nextStep(3)">Next ➡️</button>
     </div>
 
     <div class="step" id="step3">
-        <h2>Any "Red Flags"? ⛈️</h2>
-        <p>What's currently "draining" your energy? Any academic pressure or mental fatigue you'd like to let out?</p>
-        <textarea id="neg-input" rows="3" placeholder="Vent it out here... it's a safe space!"></textarea>
-        <button class="btn-next" onclick="nextStep(4)">Almost there! ✅</button>
+        <h2>Any energy drainers? ⛈️</h2>
+        <p>What is currently the biggest challenge to your happiness?</p>
+        <textarea id="ans2" rows="3" placeholder="Honestly, I'm struggling with..."></textarea>
+        <button class="btn-next" onclick="nextStep(4)">Almost Done ✅</button>
     </div>
 
     <div class="step" id="step4">
-        <h2>GNH Connection 🫂</h2>
-        <p>Happiness is collective! How's the "vibe" with your family and community? Are they on the same wavelength as you?</p>
-        <textarea id="community-input" rows="3" placeholder="How's your circle doing?"></textarea>
-        <button class="btn-next" onclick="finish()">Finish & Study! 🚀</button>
+        <h2>Your Circle 🫂</h2>
+        <p>How is the wellbeing of your family and community?</p>
+        <textarea id="ans3" rows="3" placeholder="My family is..."></textarea>
+        <button class="btn-next" onclick="showFinal()">Finish & Review 🚀</button>
     </div>
 
     <div class="step" id="step-final">
-        <h2>Brilliant! 🌈</h2>
-        <p>Thanks for being honest with yourself. Now, let's channel this energy into our IELTS lesson and crush it!</p>
-        <p style="font-size: 0.85rem; font-style: italic; color: #888; margin-top: 20px;">"Happiness is the highest form of health."</p>
+        <h2>Vibe Check: Complete! 🌈</h2>
+        <div class="summary-box" id="user-responses"></div>
+        
+        <div class="cheat-sheet">
+            <h3>💡 Band 8.0+ Vocabulary</h3>
+            <p><span class="vocab-item">Euphoric:</span> Extremely happy.<br>
+               <span class="vocab-item">Contentment:</span> A state of happiness and satisfaction.<br>
+               <span class="vocab-item">On cloud nine:</span> Very happy and excited.<br>
+               <span class="vocab-item">A major contributor to:</span> Something that helps cause something.<br>
+               <span class="vocab-item">Sole determinant:</span> The only thing that decides something.</p>
+            
+            <hr>
+            <h3>🚀 Random Structures for you</h3>
+            <div id="random-structures"></div>
+        </div>
+        <p style="margin-top:15px; font-size:0.8rem;"><i>Time to turn these vibes into a Band 8.0!</i></p>
     </div>
 </div>
 
 <script>
-    function nextStep(stepNumber) {
-        document.querySelectorAll('.step').forEach(step => {
-            step.classList.remove('active');
-        });
-        document.getElementById('step' + stepNumber).classList.add('active');
+    const structures = [
+        "I strongly believe that’s not the case as academic success can be also defined as...",
+        "I couldn’t agree more that academic success is mainly shaped by both ... and ...",
+        "It’s often said that ... serves/acts as a driving force behind academic success.",
+        "I think it really depends as academic success is built upon several factors such as ...",
+        "From my perspective, academic success is more about finding a balance between ... and ...",
+        "I don’t think it’s true that academic success can be thought of as / reduced to ...",
+        "I firmly believe that academic success is determined by things such as ...",
+        "There is a common belief that academic success is closely tied to both ... and ...",
+        "In some cases, it could be argued that academic success is influenced by factors such as ...",
+        "As far as I’m concerned, academic success stems from several different factors such as ..."
+    ];
+
+    function nextStep(s) {
+        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+        document.getElementById('step' + s).classList.add('active');
     }
 
-    function finish() {
-        document.querySelectorAll('.step').forEach(step => {
-            step.classList.remove('active');
+    function showFinal() {
+        // Show user responses
+        const res = `
+            <b>Your happiness:</b> ${document.getElementById('ans1').value}<br>
+            <b>Your challenge:</b> ${document.getElementById('ans2').value}<br>
+            <b>Your community:</b> ${document.getElementById('ans3').value}
+        `;
+        document.getElementById('user-responses').innerHTML = res;
+
+        // Pick 5 random structures
+        const shuffled = structures.sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, 5);
+        let structHtml = '';
+        selected.forEach(s => {
+            structHtml += `<span class="structure-item">• ${s}</span>`;
         });
-        document.getElementById('step-final').classList.add('active');
-        console.log("Check-in completed. Vibes updated!");
+        document.getElementById('random-structures').innerHTML = structHtml;
+
+        nextStep('-final');
     }
 </script>
 
