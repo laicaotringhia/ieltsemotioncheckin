@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GNH Emotion Check-in</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --accent: #FFE66D;
+            --dark: #2F2F2F;
+            --bg: #F7FFF7;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Pop-up Container */
+        #popup-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 30px;
+            box-shadow: 10px 10px 0px var(--dark);
+            border: 4px solid var(--dark);
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        p { color: #555; line-height: 1.6; }
+
+        .btn-next {
+            background: var(--secondary);
+            color: white;
+            border: 3px solid var(--dark);
+            padding: 12px 30px;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            transition: 0.2s;
+            box-shadow: 4px 4px 0px var(--dark);
+        }
+
+        .btn-next:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--dark);
+        }
+
+        .btn-next:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px var(--dark);
+        }
+
+        /* Form styling */
+        textarea {
+            width: 100%;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            padding: 10px;
+            font-family: inherit;
+            margin-top: 10px;
+            box-sizing: border-box;
+            resize: none;
+        }
+
+        .step { display: none; }
+        .step.active { display: block; }
+
+        .badge {
+            background: var(--accent);
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div id="popup-card">
+    <div class="step active" id="step1">
+        <span class="badge">#IELTS6.5_Vibe</span>
+        <h2>Hế lô các "Sĩ tử"! 👋</h2>
+        <p>Trước khi "vắt kiệt" chất xám cho Reading/Listening, hãy dành 1 phút để check-in tâm hồn theo chuẩn <b>Gross National Happiness (GNH)</b> nhé!</p>
+        <button class="btn-next" onclick="nextStep(2)">Bắt đầu thui! ✨</button>
+    </div>
+
+    <div class="step" id="step2">
+        <h2>Flex điều làm bạn 🌻 nhất?</h2>
+        <p>Trong 9 trụ cột của GNH (Sức khỏe, Giáo dục, Môi trường...), điều gì khiến bạn thấy "slay" nhất lúc này?</p>
+        <textarea id="pos-input" rows="3" placeholder="Ví dụ: Ăn ngon, gia đình chill, hay crush rep tin nhắn..."></textarea>
+        <button class="btn-next" onclick="nextStep(3)">Tiếp tục đi... ➡️</button>
+    </div>
+
+    <div class="step" id="step3">
+        <h2>Điều gì đang "bào mòn" năng lượng? ⛈️</h2>
+        <p>Có "red flag" nào về sức khỏe tâm lý hay áp lực học tập làm bạn thấy chưa ổn không?</p>
+        <textarea id="neg-input" rows="3" placeholder="Chia sẻ một chút để giải tỏa nào..."></textarea>
+        <button class="btn-next" onclick="nextStep(4)">Chốt đơn! ✅</button>
+    </div>
+
+    <div class="step" id="step4">
+        <h2>GNH Connection 🫂</h2>
+        <p>Hạnh phúc không chỉ là cá nhân. Gia đình và "đồng bọn" xung quanh có đang cùng tần số với bạn không?</p>
+        <textarea id="community-input" rows="3" placeholder="Mọi người vẫn ổn áp chứ?"></textarea>
+        <button class="btn-next" onclick="finish()">Hoàn tất & Học thui! 🚀</button>
+    </div>
+
+    <div class="step" id="step-final">
+        <h2>Great Job! 🌈</h2>
+        <p>Cảm ơn bạn đã trung thực với cảm xúc của mình. Giờ thì biến những cảm xúc này thành <b>Band 8.0 Speaking</b> thôi nào!</p>
+        <p style="font-size: 0.8rem; font-style: italic;">"Happiness is the highest form of health."</p>
+    </div>
+</div>
+
+<script>
+    function nextStep(stepNumber) {
+        // Ẩn tất cả các step
+        document.querySelectorAll('.step').forEach(step => {
+            step.classList.remove('active');
+        });
+        // Hiện step mong muốn
+        document.getElementById('step' + stepNumber).classList.add('active');
+    }
+
+    function finish() {
+        document.querySelectorAll('.step').forEach(step => {
+            step.classList.remove('active');
+        });
+        document.getElementById('step-final').classList.add('active');
+        
+        // Hiệu ứng pháo hoa giấy nhỏ (Console log cho vui)
+        console.log("Check-in data submitted! Ready to study.");
+    }
+</script>
+
+</body>
+</html>
